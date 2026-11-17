@@ -1,8 +1,12 @@
 import type { ChapterMeta, EngineId, Grade, LessonMeta, Subject } from './types';
 
-export const SUBJECT_NAME: Record<Subject, string> = { phys: 'Vật lí', chem: 'Hoá học' };
+export const SUBJECT_NAME: Record<Subject, string> = { phys: 'Vật lí', chem: 'Hoá học', math: 'Toán' };
 /** Tiền tố đường dẫn trang danh sách bài theo môn */
-export const SUBJECT_PATH: Record<Subject, string> = { phys: 'lop', chem: 'hoa' };
+export const SUBJECT_PATH: Record<Subject, string> = { phys: 'lop', chem: 'hoa', math: 'toan' };
+/** Các lớp có nội dung của từng môn */
+export const SUBJECT_GRADES: Record<Subject, Grade[]> = { phys: [7, 8, 9], chem: [7, 8, 9], math: [8] };
+/** Tiền tố mã bài theo môn */
+const ID_PREFIX: Record<Subject, string> = { phys: 'l', chem: 'h', math: 't' };
 
 export const CHAPTERS: Record<string, ChapterMeta> = {
   // ---------- Vật lí ----------
@@ -33,6 +37,17 @@ export const CHAPTERS: Record<string, ChapterMeta> = {
   'h9-VIII': { subject: 'chem', grade: 9, roman: 'VIII', title: 'Ethylic alcohol và acetic acid' },
   'h9-IX': { subject: 'chem', grade: 9, roman: 'IX', title: 'Lipid. Carbohydrate. Protein. Polymer' },
   'h9-X': { subject: 'chem', grade: 9, roman: 'X', title: 'Khai thác tài nguyên từ vỏ Trái Đất' },
+  // ---------- Toán ----------
+  't8-I': { subject: 'math', grade: 8, roman: 'I', title: 'Đa thức' },
+  't8-II': { subject: 'math', grade: 8, roman: 'II', title: 'Hằng đẳng thức đáng nhớ và ứng dụng' },
+  't8-III': { subject: 'math', grade: 8, roman: 'III', title: 'Tứ giác' },
+  't8-IV': { subject: 'math', grade: 8, roman: 'IV', title: 'Định lí Thalès' },
+  't8-V': { subject: 'math', grade: 8, roman: 'V', title: 'Dữ liệu và biểu đồ' },
+  't8-VI': { subject: 'math', grade: 8, roman: 'VI', title: 'Phân thức đại số' },
+  't8-VII': { subject: 'math', grade: 8, roman: 'VII', title: 'Phương trình bậc nhất và hàm số bậc nhất' },
+  't8-VIII': { subject: 'math', grade: 8, roman: 'VIII', title: 'Mở đầu về tính xác suất của biến cố' },
+  't8-IX': { subject: 'math', grade: 8, roman: 'IX', title: 'Tam giác đồng dạng' },
+  't8-X': { subject: 'math', grade: 8, roman: 'X', title: 'Một số hình khối trong thực tiễn' },
 };
 
 const PHASE: Record<EngineId, string> = {
@@ -50,6 +65,12 @@ const PHASE: Record<EngineId, string> = {
   sound: 'P9',
   light: 'P10',
   magnet: 'P11',
+  algebra: 'T1',
+  func: 'T2',
+  geometry: 'T3',
+  stats: 'T4',
+  prob: 'T5',
+  solid: 'T6',
 };
 
 type Row = [num: number, title: string, chapter: string, engine: EngineId, practical?: boolean];
@@ -157,9 +178,51 @@ const CHEM_9: Row[] = [
   [35, 'Khai thác nhiên liệu hoá thạch. Nguồn carbon. Chu trình carbon và sự ấm lên toàn cầu', 'h9-X', 'process'],
 ];
 
+const MATH_8: Row[] = [
+  [1, 'Đơn thức', 't8-I', 'algebra'],
+  [2, 'Đa thức', 't8-I', 'algebra'],
+  [3, 'Phép cộng và phép trừ đa thức', 't8-I', 'algebra'],
+  [4, 'Phép nhân đa thức', 't8-I', 'algebra'],
+  [5, 'Phép chia đa thức cho đơn thức', 't8-I', 'algebra'],
+  [6, 'Hiệu hai bình phương. Bình phương của một tổng hay một hiệu', 't8-II', 'algebra'],
+  [7, 'Lập phương của một tổng. Lập phương của một hiệu', 't8-II', 'algebra'],
+  [8, 'Tổng và hiệu hai lập phương', 't8-II', 'algebra'],
+  [9, 'Phân tích đa thức thành nhân tử', 't8-II', 'algebra'],
+  [10, 'Tứ giác', 't8-III', 'geometry'],
+  [11, 'Hình thang cân', 't8-III', 'geometry'],
+  [12, 'Hình bình hành', 't8-III', 'geometry'],
+  [13, 'Hình chữ nhật', 't8-III', 'geometry'],
+  [14, 'Hình thoi và hình vuông', 't8-III', 'geometry'],
+  [15, 'Định lí Thalès trong tam giác', 't8-IV', 'geometry'],
+  [16, 'Đường trung bình của tam giác', 't8-IV', 'geometry'],
+  [17, 'Tính chất đường phân giác của tam giác', 't8-IV', 'geometry'],
+  [18, 'Thu thập và phân loại dữ liệu', 't8-V', 'stats'],
+  [19, 'Biểu diễn dữ liệu bằng bảng, biểu đồ', 't8-V', 'stats'],
+  [20, 'Phân tích số liệu thống kê dựa vào biểu đồ', 't8-V', 'stats'],
+  [21, 'Phân thức đại số', 't8-VI', 'algebra'],
+  [22, 'Tính chất cơ bản của phân thức đại số', 't8-VI', 'algebra'],
+  [23, 'Phép cộng và phép trừ phân thức đại số', 't8-VI', 'algebra'],
+  [24, 'Phép nhân và phép chia phân thức đại số', 't8-VI', 'algebra'],
+  [25, 'Phương trình bậc nhất một ẩn', 't8-VII', 'algebra'],
+  [26, 'Giải bài toán bằng cách lập phương trình', 't8-VII', 'algebra'],
+  [27, 'Khái niệm hàm số và đồ thị của hàm số', 't8-VII', 'func'],
+  [28, 'Hàm số bậc nhất và đồ thị của hàm số bậc nhất', 't8-VII', 'func'],
+  [29, 'Hệ số góc của đường thẳng', 't8-VII', 'func'],
+  [30, 'Kết quả có thể và kết quả thuận lợi', 't8-VIII', 'prob'],
+  [31, 'Cách tính xác suất của biến cố bằng tỉ số', 't8-VIII', 'prob'],
+  [32, 'Mối liên hệ giữa xác suất thực nghiệm với xác suất và ứng dụng', 't8-VIII', 'prob'],
+  [33, 'Hai tam giác đồng dạng', 't8-IX', 'geometry'],
+  [34, 'Ba trường hợp đồng dạng của hai tam giác', 't8-IX', 'geometry'],
+  [35, 'Định lí Pythagore và ứng dụng', 't8-IX', 'geometry'],
+  [36, 'Các trường hợp đồng dạng của hai tam giác vuông', 't8-IX', 'geometry'],
+  [37, 'Hình đồng dạng', 't8-IX', 'geometry'],
+  [38, 'Hình chóp tam giác đều', 't8-X', 'solid'],
+  [39, 'Hình chóp tứ giác đều', 't8-X', 'solid'],
+];
+
 function build(subject: Subject, grade: Grade, rows: Row[]): LessonMeta[] {
   return rows.map(([num, title, chapter, engine, practical]) => ({
-    id: `${subject === 'phys' ? 'l' : 'h'}${grade}-${num}`,
+    id: `${ID_PREFIX[subject]}${grade}-${num}`,
     subject,
     grade,
     num,
@@ -171,7 +234,7 @@ function build(subject: Subject, grade: Grade, rows: Row[]): LessonMeta[] {
   }));
 }
 
-export const LESSONS: LessonMeta[] = [...build('phys', 7, ROWS_7), ...build('phys', 8, ROWS_8), ...build('phys', 9, ROWS_9), ...build('chem', 7, CHEM_7), ...build('chem', 8, CHEM_8), ...build('chem', 9, CHEM_9)];
+export const LESSONS: LessonMeta[] = [...build('phys', 7, ROWS_7), ...build('phys', 8, ROWS_8), ...build('phys', 9, ROWS_9), ...build('chem', 7, CHEM_7), ...build('chem', 8, CHEM_8), ...build('chem', 9, CHEM_9), ...build('math', 8, MATH_8)];
 
 export const lessonById = (id: string) => LESSONS.find((l) => l.id === id);
 

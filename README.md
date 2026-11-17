@@ -1,7 +1,8 @@
-# Phòng Lab KHTN (Vật lí + Hoá học)
+# Phòng Lab KHTN (Vật lí + Hoá học) và Toán 8
 
 Mô phỏng thí nghiệm cho phần Vật lí (48 bài) và phần Hoá học (37 bài) của KHTN 7, KHTN 8 và KHTN 9 (bộ Kết nối tri thức), thiết kế để giáo viên trình chiếu trên lớp.
 
+- Toán 8 (Kết nối tri thức): đủ 39 bài của 10 chương, 187 cảnh, mỗi bài có nội dung bài học. Route `#/toan/8`, mã bài `t8-1` … `t8-39`.
 - KHTN 7: Vật lí Bài 1, 8–20 (tốc độ, âm thanh, ánh sáng, từ); Hoá học Bài 2–7 (nguyên tử, nguyên tố, bảng tuần hoàn, phân tử, liên kết, hoá trị). Phần Sinh học không thuộc phạm vi app.
 Kế hoạch đầy đủ và tiến độ xem tại [docs/KE_HOACH.md](docs/KE_HOACH.md).
 
@@ -45,9 +46,15 @@ src/
                    tốc độ phản ứng, dung dịch, mol, cân bằng PTHH, công thức cấu tạo, polymer, mô hình nguyên tử,
                    bảng tuần hoàn (elements.ts), liên kết ion/cộng hoá trị, hoá trị (AtomViews.tsx),
                    thẻ thông tin & quy trình (infoData.ts), lò cao, chưng cất dầu, chu trình carbon…
+    math/          T1–T6 – Toán 8: đại số (đơn thức, đa thức, mô hình diện tích, hằng đẳng thức bằng hình,
+                   cân phương trình, phân thức có đồ thị), hàm số (sơ đồ mũi tên, mặt phẳng toạ độ, y = ax + b),
+                   hình học (tứ giác kéo đỉnh giữ tính chất, Thalès, phân giác, đồng dạng, Pythagore, đo gián tiếp),
+                   dữ liệu – biểu đồ, xác suất (liệt kê kết quả, thí nghiệm lặp), hình chóp đều 3D.
+                   Dữ liệu: mathData.ts, lời giải từng bước: mathDerive.ts. Sáu engine dùng chung MathView.
     registry.ts
   lessons/     nội dung từng bài: danh sách cảnh, lời dẫn, câu hỏi, báo cáo
     phys7.ts, chem7.ts  danh sách cảnh các bài lớp 7 (id l7-x, h7-x)
+    math8a.ts, math8b.ts  danh sách cảnh Toán 8 (id t8-x)
     chem8.ts, chem9.ts  danh sách cảnh các bài Hoá (id h8-x, h9-x)
     notes/     nội dung bài học (kiến thức, hiện tượng, ví dụ, câu hỏi vận dụng) cho 34 bài Lí + 31 bài Hoá
   ui/          trang chủ, danh sách bài, khung trình chiếu, bút vẽ, báo cáo

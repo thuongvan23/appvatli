@@ -2,10 +2,10 @@ import type { ComponentType } from 'react';
 
 export type Grade = 7 | 8 | 9;
 
-/** Môn: Vật lí hoặc Hoá học */
-export type Subject = 'phys' | 'chem';
+/** Môn: Vật lí, Hoá học hoặc Toán */
+export type Subject = 'phys' | 'chem' | 'math';
 
-export type EngineId = 'circuit' | 'optics' | 'fluid' | 'mechanics' | 'thermal' | 'electromagnet' | 'diagram' | 'chemlab' | 'molecule' | 'process' | 'motion' | 'sound' | 'light' | 'magnet';
+export type EngineId = 'circuit' | 'optics' | 'fluid' | 'mechanics' | 'thermal' | 'electromagnet' | 'diagram' | 'chemlab' | 'molecule' | 'process' | 'motion' | 'sound' | 'light' | 'magnet' | 'algebra' | 'func' | 'geometry' | 'stats' | 'prob' | 'solid';
 
 export interface ChapterMeta {
   subject: Subject;

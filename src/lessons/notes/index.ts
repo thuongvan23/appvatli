@@ -8,6 +8,8 @@ import { NOTES_H8 } from './notesH8';
 import { NOTES_H9 } from './notesH9';
 import { NOTES_7 } from './notes7';
 import { NOTES_H7 } from './notesH7';
+import { NOTES_T8A } from './notesT8a';
+import { NOTES_T8B } from './notesT8b';
 
-/** Nội dung bài học: 48 bài Vật lí và 37 bài Hoá học (KHTN 7, 8, 9). */
-export const NOTES: Record<string, LessonNotes> = { ...NOTES_8A, ...NOTES_8B, ...NOTES_8C, ...NOTES_9A, ...NOTES_9B, ...NOTES_H8, ...NOTES_H9, ...NOTES_7, ...NOTES_H7 };
+/** Nội dung bài học: 48 bài Vật lí, 37 bài Hoá học (KHTN 7, 8, 9) và 39 bài Toán 8. */
+export const NOTES: Record<string, LessonNotes> = { ...NOTES_8A, ...NOTES_8B, ...NOTES_8C, ...NOTES_9A, ...NOTES_9B, ...NOTES_H8, ...NOTES_H9, ...NOTES_7, ...NOTES_H7, ...NOTES_T8A, ...NOTES_T8B };

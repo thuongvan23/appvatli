@@ -14,6 +14,51 @@ import { DiagramDoc, DiagramOptions, DiagramView } from './diagram/DiagramView';
 import { ChemDoc, ChemOptions, ChemView } from './chem/ChemLabView';
 import { FULL_SHELF } from './chem/TubesView';
 import { Phys7Doc, Phys7Options, Phys7View } from './phys7/Phys7View';
+import { MathDoc, MathOptions, MathView } from './math/MathView';
+
+// ---------- Toán 8: sáu engine dùng chung một bộ điều phối ----------
+const algebra: EngineDef<MathDoc, MathOptions> = {
+  id: 'algebra',
+  name: 'Đại số – đa thức, phương trình',
+  View: MathView,
+  emptyDoc: () => ({ mode: 'identity', id: 'sqsum', a: 3, b: 2, t: 0, list: ['sqsum', 'sqdiff', 'diff2', 'cubesum', 'cubediff', 'sum3', 'diff3'] }),
+  freeOptions: {},
+};
+const func: EngineDef<MathDoc, MathOptions> = {
+  id: 'func',
+  name: 'Vẽ đồ thị hàm số bậc nhất',
+  View: MathView,
+  emptyDoc: () => ({ mode: 'linear', a: 1, b: 1, intercepts: true }),
+  freeOptions: {},
+};
+const geometry: EngineDef<MathDoc, MathOptions> = {
+  id: 'geometry',
+  name: 'Hình học – tứ giác',
+  View: MathView,
+  emptyDoc: () => ({ mode: 'quad', kind: 'free', p: [{ x: 220, y: 500 }, { x: 620, y: 520 }, { x: 560, y: 220 }, { x: 300, y: 180 }], angles: true, sides: true, kinds: ['free', 'trap', 'rtrap', 'isoTrap', 'para', 'rect', 'rhombus', 'square'] }),
+  freeOptions: {},
+};
+const stats: EngineDef<MathDoc, MathOptions> = {
+  id: 'stats',
+  name: 'Dữ liệu và biểu đồ',
+  View: MathView,
+  emptyDoc: () => ({ mode: 'chart', set: 'fruits', kind: 'bar', kinds: ['table', 'bar', 'pie', 'picto', 'line'], edit: true }),
+  freeOptions: {},
+};
+const prob: EngineDef<MathDoc, MathOptions> = {
+  id: 'prob',
+  name: 'Xác suất thực nghiệm',
+  View: MathView,
+  emptyDoc: () => ({ mode: 'experiment', exp: 'die', ev: 0, trials: 0, hits: 0, pts: [] }),
+  freeOptions: {},
+};
+const solid: EngineDef<MathDoc, MathOptions> = {
+  id: 'solid',
+  name: 'Hình chóp đều',
+  View: MathView,
+  emptyDoc: () => ({ mode: 'pyramid', kind: 'sq', kinds: ['tri', 'sq'], a: 4, h: 5, yaw: 30, pitch: 20, unfold: 0, labels: true }),
+  freeOptions: {},
+};
 
 // ---------- Vật lí 7: bốn engine dùng chung một bộ điều phối ----------
 const motion: EngineDef<Phys7Doc, Phys7Options> = {
@@ -149,4 +194,10 @@ export const ENGINES: Partial<Record<EngineId, EngineDef<any, any>>> = {
   sound,
   light,
   magnet,
+  algebra,
+  func,
+  geometry,
+  stats,
+  prob,
+  solid,
 };

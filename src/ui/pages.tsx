@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { CHAPTERS, LESSONS, SUBJECT_NAME, SUBJECT_PATH, chaptersOf, lessonById } from '../core/catalog';
+import { CHAPTERS, LESSONS, SUBJECT_GRADES, SUBJECT_NAME, SUBJECT_PATH, chaptersOf, lessonById } from '../core/catalog';
 import { decodeShare } from '../core/share';
 import { go } from '../core/route';
 import type { Grade, Subject } from '../core/types';
@@ -25,7 +25,16 @@ const ENGINE_LABEL: Record<string, string> = {
   sound: 'Âm thanh',
   light: 'Ánh sáng',
   magnet: 'Từ',
+  algebra: 'Đại số',
+  func: 'Hàm số – đồ thị',
+  geometry: 'Hình học',
+  stats: 'Dữ liệu – biểu đồ',
+  prob: 'Xác suất',
+  solid: 'Hình khối',
 };
+
+const SUBJECT_SUB: Record<Subject, string> = { phys: 'Năng lượng và sự biến đổi', chem: 'Chất và sự biến đổi của chất', math: 'Toán 8 – bộ Kết nối tri thức' };
+const bookName = (subject: Subject, g: Grade) => (subject === 'math' ? `Toán ${g}` : `${SUBJECT_NAME[subject]} – KHTN ${g}`);
 
 function TopBar({ children }: { children?: React.ReactNode }) {
   return (
@@ -34,7 +43,7 @@ function TopBar({ children }: { children?: React.ReactNode }) {
         <span className="brand-mark">
           <Icon name="bolt" size={22} />
         </span>
-        Phòng Lab KHTN
+        Phòng Lab KHTN &amp; Toán
       </button>
       <span className="grow" />
       {children}
@@ -53,25 +62,23 @@ export function HomePage() {
       <TopBar />
       <main className="home">
         <section className="hero">
-          <h1>Phòng thí nghiệm Khoa học tự nhiên trực tuyến</h1>
-          <p>Mô phỏng thí nghiệm cho phần Vật lí và Hoá học – Khoa học tự nhiên 7, 8 và 9 (bộ Kết nối tri thức). Thiết kế để giáo viên trình chiếu trên lớp.</p>
+          <h1>Phòng thí nghiệm Khoa học tự nhiên và Toán trực tuyến</h1>
+          <p>Mô phỏng thí nghiệm cho phần Vật lí và Hoá học – Khoa học tự nhiên 7, 8, 9 và mô hình trực quan cho Toán 8 (bộ Kết nối tri thức). Thiết kế để giáo viên trình chiếu trên lớp.</p>
         </section>
-        {(['phys', 'chem'] as Subject[]).map((subject) => (
+        {(['phys', 'chem', 'math'] as Subject[]).map((subject) => (
           <section key={subject}>
             <h2 className="subject-head">
               {SUBJECT_NAME[subject]}
-              <span className="muted small">{subject === 'phys' ? 'Năng lượng và sự biến đổi' : 'Chất và sự biến đổi của chất'}</span>
+              <span className="muted small">{SUBJECT_SUB[subject]}</span>
             </h2>
             <div className="grade-cards">
-              {([7, 8, 9] as Grade[]).map((g) => {
+              {SUBJECT_GRADES[subject].map((g) => {
                 const c = count(subject, g);
                 return (
-                  <button key={g} className={`grade-card ${subject === 'chem' ? 'chem' : ''} ${g === 7 ? 'g7' : ''}`} onClick={() => go(`/${SUBJECT_PATH[subject]}/${g}`)}>
+                  <button key={g} className={`grade-card ${subject === 'phys' ? '' : subject} ${g === 7 ? 'g7' : ''}`} onClick={() => go(`/${SUBJECT_PATH[subject]}/${g}`)}>
                     <span className="grade-num">{g}</span>
                     <span className="grade-text">
-                      <b>
-                        {SUBJECT_NAME[subject]} – KHTN {g}
-                      </b>
+                      <b>{bookName(subject, g)}</b>
                       <span>
                         {c.ready}/{c.total} bài đã có mô phỏng
                       </span>
@@ -89,7 +96,7 @@ export function HomePage() {
           <h2>Phòng lab tự do</h2>
           <p className="muted">Tự lắp thí nghiệm của riêng thầy cô, lưu thành file hoặc đường link để dùng lại trên lớp.</p>
           <div className="free-grid">
-            {(['circuit', 'optics', 'chemlab'] as const).map((id) => {
+            {(['circuit', 'optics', 'chemlab', 'func', 'geometry', 'stats'] as const).map((id) => {
               const e = ENGINES[id]!;
               return (
                 <button key={id} className="free-card" onClick={() => go(`/lab/${id}`)}>
@@ -119,29 +126,26 @@ export function GradePage({ grade, subject = 'phys' }: { grade: Grade; subject?:
     <div className="page">
       <TopBar>
         <div className="seg">
-          <button className={subject === 'phys' ? 'on' : ''} onClick={() => go(`/lop/${grade}`)}>
+          <button className={subject === 'phys' ? 'on' : ''} onClick={() => go(`/lop/${subject === 'math' ? 8 : grade}`)}>
             Vật lí
           </button>
-          <button className={subject === 'chem' ? 'on' : ''} onClick={() => go(`/hoa/${grade}`)}>
+          <button className={subject === 'chem' ? 'on' : ''} onClick={() => go(`/hoa/${subject === 'math' ? 8 : grade}`)}>
             Hoá học
+          </button>
+          <button className={subject === 'math' ? 'on' : ''} onClick={() => go('/toan/8')}>
+            Toán
           </button>
         </div>
         <div className="seg">
-          <button className={grade === 7 ? 'on' : ''} onClick={() => go(`/${base}/7`)}>
-            Lớp 7
-          </button>
-          <button className={grade === 8 ? 'on' : ''} onClick={() => go(`/${base}/8`)}>
-            Lớp 8
-          </button>
-          <button className={grade === 9 ? 'on' : ''} onClick={() => go(`/${base}/9`)}>
-            Lớp 9
-          </button>
+          {SUBJECT_GRADES[subject].map((g) => (
+            <button key={g} className={grade === g ? 'on' : ''} onClick={() => go(`/${base}/${g}`)}>
+              Lớp {g}
+            </button>
+          ))}
         </div>
       </TopBar>
       <main className="grade-page">
-        <h1>
-          Khoa học tự nhiên {grade} – Phần {SUBJECT_NAME[subject]}
-        </h1>
+        <h1>{subject === 'math' ? `Toán ${grade} – Kết nối tri thức với cuộc sống` : `Khoa học tự nhiên ${grade} – Phần ${SUBJECT_NAME[subject]}`}</h1>
         {chapters.map(({ key, meta, lessons }) => (
           <section key={key} className="chapter">
             <h2>
@@ -180,7 +184,7 @@ export function GuidePage() {
         <h1>Hướng dẫn sử dụng cho giáo viên</h1>
         <section>
           <h2>1. Mở bài học</h2>
-          <p>Từ trang chủ chọn lớp 7, 8 hoặc 9, rồi chọn bài theo đúng số thứ tự trong SGK Khoa học tự nhiên (bộ Kết nối tri thức). Mỗi bài gồm nhiều <b>cảnh</b> (giống các trang trình chiếu), mỗi cảnh là một thí nghiệm đã dựng sẵn.</p>
+          <p>Từ trang chủ chọn môn (Vật lí, Hoá học, Toán) và lớp, rồi chọn bài theo đúng số thứ tự trong SGK Khoa học tự nhiên hoặc SGK Toán 8 (bộ Kết nối tri thức). Mỗi bài gồm nhiều <b>cảnh</b> (giống các trang trình chiếu), mỗi cảnh là một thí nghiệm đã dựng sẵn.</p>
         </section>
         <section>
           <h2>2. Trình chiếu trên lớp</h2>
@@ -281,8 +285,8 @@ export function LessonPage({ id, scene }: { id: string; scene: number }) {
   return (
     <Workspace
       backHref={`/${SUBJECT_PATH[meta.subject]}/${meta.grade}`}
-      backLabel={`${meta.subject === 'chem' ? 'Hoá' : 'Lí'} ${meta.grade}`}
-      kicker={`KHTN ${meta.grade}${ch.roman ? ` · Chương ${ch.roman}` : ''} · Bài ${meta.num}`}
+      backLabel={`${meta.subject === 'chem' ? 'Hoá' : meta.subject === 'math' ? 'Toán' : 'Lí'} ${meta.grade}`}
+      kicker={`${meta.subject === 'math' ? 'Toán' : 'KHTN'} ${meta.grade}${ch.roman ? ` · Chương ${ch.roman}` : ''} · Bài ${meta.num}`}
       title={meta.title}
       scenes={{ titles: content.scenes.map((s) => s.title), index: idx, onSelect: (i) => go(`/bai/${id}/${i + 1}`, true) }}
       engine={engine}
@@ -353,6 +357,14 @@ export function FreeLabPage({ engineId, data }: { engineId: string; data?: strin
           ? 'Chọn hoá chất hoặc dụng cụ ở giá bên phải rồi bấm vào ống nghiệm. Dùng "+ Thêm ống", "Đổi vật chứa" để tự thiết kế thí nghiệm; bấm "Lưu" hoặc "Link" để dùng lại.'
           : engineId === 'optics'
             ? 'Kéo nguồn sáng, khối thuỷ tinh, lăng kính để tạo đường truyền ánh sáng. Bấm "Lưu" hoặc "Link" để dùng lại thí nghiệm.'
+            : engineId === 'func'
+              ? 'Kéo thanh trượt a, b để vẽ đồ thị y = ax + b; bật thêm đường thẳng thứ hai để xét vị trí tương đối. Bấm "Lưu" hoặc "Link" để dùng lại.'
+              : engineId === 'geometry'
+                ? 'Chọn loại tứ giác rồi kéo các đỉnh; bật số đo góc, cạnh, đường chéo. Bấm "Lưu" hoặc "Link" để dùng lại hình đã dựng.'
+                : engineId === 'stats'
+                  ? 'Sửa số liệu ở bảng bên phải, đổi qua lại giữa bảng và các loại biểu đồ.'
+                  : engineId === 'algebra' || engineId === 'prob' || engineId === 'solid'
+                    ? 'Dùng các điều khiển ở bảng bên phải.'
             : 'Kéo linh kiện từ hộp bên trái vào bàn; kéo từ chấm tròn ở đầu linh kiện để nối dây. Bấm "Lưu" hoặc "Link" để dùng lại thí nghiệm.')
       }
       sceneKey={`lab/${engineId}`}
