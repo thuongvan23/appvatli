@@ -2224,3 +2224,8 @@ b.big {
   height: auto;
   text-align: left;
 }
+.trig-row {
+  font-size: 22px;
+  margin: 8px 0;
+  font-family: 'Cambria Math', Cambria, 'Times New Roman', serif;
+}

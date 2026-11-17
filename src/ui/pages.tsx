@@ -33,7 +33,7 @@ const ENGINE_LABEL: Record<string, string> = {
   solid: 'Hình khối',
 };
 
-const SUBJECT_SUB: Record<Subject, string> = { phys: 'Năng lượng và sự biến đổi', chem: 'Chất và sự biến đổi của chất', math: 'Toán 8 – bộ Kết nối tri thức' };
+const SUBJECT_SUB: Record<Subject, string> = { phys: 'Năng lượng và sự biến đổi', chem: 'Chất và sự biến đổi của chất', math: 'Toán 8, Toán 9 – bộ Kết nối tri thức' };
 const bookName = (subject: Subject, g: Grade) => (subject === 'math' ? `Toán ${g}` : `${SUBJECT_NAME[subject]} – KHTN ${g}`);
 
 function TopBar({ children }: { children?: React.ReactNode }) {
@@ -63,7 +63,7 @@ export function HomePage() {
       <main className="home">
         <section className="hero">
           <h1>Phòng thí nghiệm Khoa học tự nhiên và Toán trực tuyến</h1>
-          <p>Mô phỏng thí nghiệm cho phần Vật lí và Hoá học – Khoa học tự nhiên 7, 8, 9 và mô hình trực quan cho Toán 8 (bộ Kết nối tri thức). Thiết kế để giáo viên trình chiếu trên lớp.</p>
+          <p>Mô phỏng thí nghiệm cho phần Vật lí và Hoá học – Khoa học tự nhiên 7, 8, 9 và mô hình trực quan cho Toán 8, Toán 9 (bộ Kết nối tri thức). Thiết kế để giáo viên trình chiếu trên lớp.</p>
         </section>
         {(['phys', 'chem', 'math'] as Subject[]).map((subject) => (
           <section key={subject}>
@@ -132,7 +132,7 @@ export function GradePage({ grade, subject = 'phys' }: { grade: Grade; subject?:
           <button className={subject === 'chem' ? 'on' : ''} onClick={() => go(`/hoa/${subject === 'math' ? 8 : grade}`)}>
             Hoá học
           </button>
-          <button className={subject === 'math' ? 'on' : ''} onClick={() => go('/toan/8')}>
+          <button className={subject === 'math' ? 'on' : ''} onClick={() => go(`/toan/${grade === 9 ? 9 : 8}`)}>
             Toán
           </button>
         </div>
@@ -184,7 +184,7 @@ export function GuidePage() {
         <h1>Hướng dẫn sử dụng cho giáo viên</h1>
         <section>
           <h2>1. Mở bài học</h2>
-          <p>Từ trang chủ chọn môn (Vật lí, Hoá học, Toán) và lớp, rồi chọn bài theo đúng số thứ tự trong SGK Khoa học tự nhiên hoặc SGK Toán 8 (bộ Kết nối tri thức). Mỗi bài gồm nhiều <b>cảnh</b> (giống các trang trình chiếu), mỗi cảnh là một thí nghiệm đã dựng sẵn.</p>
+          <p>Từ trang chủ chọn môn (Vật lí, Hoá học, Toán) và lớp, rồi chọn bài theo đúng số thứ tự trong SGK Khoa học tự nhiên hoặc SGK Toán 8, Toán 9 (bộ Kết nối tri thức). Mỗi bài gồm nhiều <b>cảnh</b> (giống các trang trình chiếu), mỗi cảnh là một thí nghiệm đã dựng sẵn.</p>
         </section>
         <section>
           <h2>2. Trình chiếu trên lớp</h2>

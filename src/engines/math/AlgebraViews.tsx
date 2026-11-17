@@ -657,7 +657,7 @@ export const IDENTITIES: Record<IdentityId, { name: string; f: string; L: (a: nu
   diff3: { name: 'Hiệu hai lập phương', f: 'a³ − b³ = (a − b)(a² + ab + b²)', L: (a, b) => a ** 3 - b ** 3, R: (a, b) => (a - b) * (a * a + a * b + b * b) },
 };
 
-interface Box3 {
+export interface Box3 {
   x: number;
   y: number;
   z: number;
@@ -670,7 +670,7 @@ interface Box3 {
 }
 
 /** Vẽ khối hộp theo phép chiếu trục đo (isometric) */
-function IsoBoxes({ boxes, ox, oy, s }: { boxes: Box3[]; ox: number; oy: number; s: number }) {
+export function IsoBoxes({ boxes, ox, oy, s }: { boxes: Box3[]; ox: number; oy: number; s: number }) {
   const P = (x: number, y: number, z: number) => ({ X: ox + (x - y) * s * 0.866, Y: oy + (x + y) * s * 0.5 - z * s });
   const sorted = [...boxes].sort((p, q) => p.x + p.y + p.z + (p.dx + p.dy + p.dz) / 3 - (q.x + q.y + q.z + (q.dx + q.dy + q.dz) / 3));
   return (

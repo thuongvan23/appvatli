@@ -14,7 +14,7 @@ export function parseHash(hash: string): Route {
   const q = new URLSearchParams(query);
   if (parts[0] === 'huong-dan') return { name: 'guide' };
   if ((parts[0] === 'lop' || parts[0] === 'hoa') && (parts[1] === '7' || parts[1] === '8' || parts[1] === '9')) return { name: 'grade', grade: Number(parts[1]) as 7 | 8 | 9, subject: parts[0] === 'hoa' ? 'chem' : 'phys' };
-  if (parts[0] === 'toan') return { name: 'grade', grade: 8, subject: 'math' };
+  if (parts[0] === 'toan') return { name: 'grade', grade: parts[1] === '9' ? 9 : 8, subject: 'math' };
   if (parts[0] === 'bai' && parts[1]) return { name: 'lesson', id: parts[1], scene: Math.max(0, Number(parts[2] ?? 1) - 1) || 0 };
   if (parts[0] === 'lab' && parts[1]) return { name: 'lab', engine: parts[1], data: q.get('d') ?? undefined };
   return { name: 'home' };

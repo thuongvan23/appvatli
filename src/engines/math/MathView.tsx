@@ -9,6 +9,7 @@ import { ChartDoc, ChartView, DataFixDoc, DataFixView } from './DataViews';
 import { ExperimentDoc, ExperimentView, ProbDoc, ProbView } from './ProbViews';
 import { PyramidDoc, PyramidView } from './SolidViews';
 import { MATH_TABLES } from './mathData';
+import { CircleDoc, CircleView, IneqDoc, IneqView, ParabolaDoc, ParabolaView, RoundDoc, RoundView, SqrtDoc, SqrtView, SystemDoc, SystemView, TrigDoc, TrigView } from './Math9Views';
 
 // Bảng so sánh của Toán dùng chung kiểu cảnh "table" với Hoá học
 Object.assign(TABLES, MATH_TABLES);
@@ -17,7 +18,8 @@ export type MathDoc =
   | MonoDoc | SortDoc | PolyDoc | AreaDoc | IdentityDoc | BalanceDoc | FracDoc | DeriveDoc
   | FmapDoc | PlaneDoc | LinearDoc
   | QuadDoc | ThalesDoc | BisectorDoc | SimilarDoc | PythagDoc | HomoDoc | HeightDoc
-  | ChartDoc | DataFixDoc | ProbDoc | ExperimentDoc | PyramidDoc | TableDoc;
+  | ChartDoc | DataFixDoc | ProbDoc | ExperimentDoc | PyramidDoc | TableDoc
+  | SystemDoc | IneqDoc | SqrtDoc | TrigDoc | CircleDoc | ParabolaDoc | RoundDoc;
 export type MathOptions = Record<string, never>;
 
 export const MATH_MODES = [
@@ -25,6 +27,7 @@ export const MATH_MODES = [
   'fmap', 'plane', 'linear',
   'quad', 'thales', 'bisector', 'similar', 'pythag', 'homothety', 'height',
   'chart', 'datafix', 'prob', 'experiment', 'pyramid', 'table',
+  'system', 'ineq', 'sqrt', 'trig', 'circle', 'parabola', 'round',
 ] as const;
 
 export function MathView(props: EngineProps<MathDoc, MathOptions>) {
@@ -79,5 +82,19 @@ export function MathView(props: EngineProps<MathDoc, MathOptions>) {
       return <PyramidView {...p} />;
     case 'table':
       return <TableView {...p} />;
+    case 'system':
+      return <SystemView {...p} />;
+    case 'ineq':
+      return <IneqView {...p} />;
+    case 'sqrt':
+      return <SqrtView {...p} />;
+    case 'trig':
+      return <TrigView {...p} />;
+    case 'circle':
+      return <CircleView {...p} />;
+    case 'parabola':
+      return <ParabolaView {...p} />;
+    case 'round':
+      return <RoundView {...p} />;
   }
 }

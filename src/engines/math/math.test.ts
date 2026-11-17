@@ -12,8 +12,18 @@ import { pyramidMetrics } from './SolidViews';
 import { angleAt, dist, isParallel } from './mcommon';
 
 describe('nội dung Toán 8', () => {
+  it('Toán 9 đủ 32 bài, có mô phỏng và nội dung bài học', () => {
+    const m = LESSONS.filter((l) => l.subject === 'math' && l.grade === 9);
+    expect(m.length).toBe(32);
+    for (const l of m) {
+      expect(CONTENT[l.id], l.id).toBeTruthy();
+      expect(NOTES[l.id], l.id).toBeTruthy();
+      for (const s of NOTES[l.id].sections) if (s.scene) expect(s.scene, `${l.id} ${s.title}`).toBeLessThanOrEqual(CONTENT[l.id].scenes.length);
+    }
+  });
+
   it('đủ 39 bài, mỗi bài có mô phỏng và nội dung bài học', () => {
-    const m = LESSONS.filter((l) => l.subject === 'math');
+    const m = LESSONS.filter((l) => l.subject === 'math' && l.grade === 8);
     expect(m.length).toBe(39);
     expect(m.map((l) => l.num)).toEqual(Array.from({ length: 39 }, (_, i) => i + 1));
     for (const l of m) {
@@ -137,5 +147,34 @@ describe('xác suất', () => {
     expect(fav('cards20', 1)).toBe(8);
     expect(fav('bag', 0)).toBe(3);
     expect(fav('bagHidden', 0)).toBe(7);
+  });
+});
+
+import { incircle, circumcircle, quadRoots, roundMetrics, solveIneq, solveSystem } from './Math9Views';
+
+describe('Toán 9', () => {
+  it('hệ phương trình', () => {
+    expect(solveSystem([1, -2, 1], [3, 1, 10])).toEqual({ kind: 'one', x: 3, y: 1 });
+    expect(solveSystem([1, 1, 2], [2, 2, 5]).kind).toBe('none');
+    expect(solveSystem([1, 1, 2], [2, 2, 4]).kind).toBe('many');
+  });
+  it('bất phương trình đổi chiều khi chia số âm', () => {
+    expect(solveIneq(3, -5, 7, '>')).toEqual({ rel: '>', v: 4 });
+    expect(solveIneq(-2, 1, 9, '≥')).toEqual({ rel: '≤', v: -4 });
+  });
+  it('phương trình bậc hai', () => {
+    expect(quadRoots(2, -5, 2)).toEqual([0.5, 2]);
+    expect(quadRoots(1, -2, 1)).toEqual([1]);
+    expect(quadRoots(1, 1, 1)).toEqual([]);
+  });
+  it('đường tròn ngoại tiếp, nội tiếp tam giác vuông 3-4-5', () => {
+    const A = { x: 0, y: 0 }, B = { x: 3, y: 0 }, Cc = { x: 0, y: 4 };
+    expect(circumcircle(A, B, Cc).r).toBeCloseTo(2.5);
+    expect(incircle(A, B, Cc).r).toBeCloseTo(1);
+  });
+  it('hình trụ, nón, cầu', () => {
+    expect(roundMetrics('cyl', 4, 10).V).toBeCloseTo(160 * Math.PI);
+    expect(roundMetrics('cone', 3, 4).Sxq).toBeCloseTo(15 * Math.PI);
+    expect(roundMetrics('sphere', 3, 0).V).toBeCloseTo(36 * Math.PI);
   });
 });

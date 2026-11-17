@@ -1,7 +1,9 @@
 // Dữ liệu cho các cảnh Toán 8 – do nhóm phát triển tự biên soạn theo chương trình GDPT 2018.
 // Số liệu thống kê thực tế được làm tròn, mang tính minh hoạ.
 import { Poly, Term, t } from './poly';
-export { DERIVE } from './mathDerive';
+import { DERIVE } from './mathDerive';
+import { CHARTS9, DERIVE9, EXPS9, SORTS9, TABLES9 } from './math9Data';
+export { DERIVE };
 
 // ---------------- Đơn thức ----------------
 
@@ -323,7 +325,7 @@ export const HOMO_SHAPES: Record<string, { name: string; pts: [number, number][]
 
 // ---------------- Biểu đồ ----------------
 
-export const CHARTS: Record<string, { title: string; catName: string; cats: string[]; series: { name: string; vals: number[] }[]; unit: string; icon?: string; picUnit?: number; source?: string; note?: string; stepEdit?: number }> = {
+export const CHARTS: Record<string, { title: string; catName: string; cats: string[]; series: { name: string; vals: number[] }[]; unit: string; icon?: string; picUnit?: number; source?: string; note?: string; stepEdit?: number; rel?: boolean }> = {
   fruits: { title: 'Loại quả yêu thích của học sinh lớp 8A', catName: 'Loại quả', cats: ['Cam', 'Táo', 'Chuối', 'Xoài', 'Nho'], series: [{ name: 'Số học sinh', vals: [8, 6, 10, 12, 4] }], unit: 'học sinh', icon: '🍎', picUnit: 2, note: 'Bảng thống kê và các biểu đồ chỉ là các cách khác nhau để biểu diễn cùng một dữ liệu.' },
   transport: { title: 'Phương tiện đến trường của học sinh lớp 8B', catName: 'Phương tiện', cats: ['Đi bộ', 'Xe đạp', 'Xe buýt', 'Bố mẹ đưa'], series: [{ name: 'Số học sinh', vals: [8, 20, 5, 7] }], unit: 'học sinh', icon: '🚲', picUnit: 4, note: 'Biểu đồ hình quạt tròn biểu diễn tỉ lệ phần trăm của từng phần so với toàn thể.' },
   temp: { title: 'Nhiệt độ trung bình các tháng ở Hà Nội (°C)', catName: 'Tháng', cats: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'], series: [{ name: 'Nhiệt độ', vals: [16.4, 17.0, 20.2, 23.7, 27.3, 28.8, 28.9, 28.2, 27.2, 24.6, 21.4, 18.2] }], unit: '°C', source: 'Số liệu làm tròn, mang tính minh hoạ', note: 'Biểu đồ đoạn thẳng thích hợp để biểu diễn sự thay đổi của một đại lượng theo thời gian.' },
@@ -580,3 +582,10 @@ export const MATH_TABLES: Record<string, { title: string; cols: string[]; rows: 
 };
 
 export type { Poly };
+
+// Gộp dữ liệu Toán 9
+Object.assign(DERIVE, DERIVE9);
+Object.assign(CHARTS, CHARTS9);
+Object.assign(EXPS, EXPS9);
+Object.assign(SORTS, SORTS9);
+Object.assign(MATH_TABLES, TABLES9);

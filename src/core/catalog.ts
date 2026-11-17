@@ -4,7 +4,7 @@ export const SUBJECT_NAME: Record<Subject, string> = { phys: 'Vật lí', chem: 
 /** Tiền tố đường dẫn trang danh sách bài theo môn */
 export const SUBJECT_PATH: Record<Subject, string> = { phys: 'lop', chem: 'hoa', math: 'toan' };
 /** Các lớp có nội dung của từng môn */
-export const SUBJECT_GRADES: Record<Subject, Grade[]> = { phys: [7, 8, 9], chem: [7, 8, 9], math: [8] };
+export const SUBJECT_GRADES: Record<Subject, Grade[]> = { phys: [7, 8, 9], chem: [7, 8, 9], math: [8, 9] };
 /** Tiền tố mã bài theo môn */
 const ID_PREFIX: Record<Subject, string> = { phys: 'l', chem: 'h', math: 't' };
 
@@ -48,6 +48,16 @@ export const CHAPTERS: Record<string, ChapterMeta> = {
   't8-VIII': { subject: 'math', grade: 8, roman: 'VIII', title: 'Mở đầu về tính xác suất của biến cố' },
   't8-IX': { subject: 'math', grade: 8, roman: 'IX', title: 'Tam giác đồng dạng' },
   't8-X': { subject: 'math', grade: 8, roman: 'X', title: 'Một số hình khối trong thực tiễn' },
+  't9-I': { subject: 'math', grade: 9, roman: 'I', title: 'Phương trình và hệ hai phương trình bậc nhất hai ẩn' },
+  't9-II': { subject: 'math', grade: 9, roman: 'II', title: 'Phương trình và bất phương trình bậc nhất một ẩn' },
+  't9-III': { subject: 'math', grade: 9, roman: 'III', title: 'Căn bậc hai và căn bậc ba' },
+  't9-IV': { subject: 'math', grade: 9, roman: 'IV', title: 'Hệ thức lượng trong tam giác vuông' },
+  't9-V': { subject: 'math', grade: 9, roman: 'V', title: 'Đường tròn' },
+  't9-VI': { subject: 'math', grade: 9, roman: 'VI', title: 'Hàm số y = ax² (a ≠ 0). Phương trình bậc hai một ẩn' },
+  't9-VII': { subject: 'math', grade: 9, roman: 'VII', title: 'Tần số và tần số tương đối' },
+  't9-VIII': { subject: 'math', grade: 9, roman: 'VIII', title: 'Xác suất của biến cố trong một số mô hình xác suất đơn giản' },
+  't9-IX': { subject: 'math', grade: 9, roman: 'IX', title: 'Đường tròn ngoại tiếp và đường tròn nội tiếp' },
+  't9-X': { subject: 'math', grade: 9, roman: 'X', title: 'Một số hình khối trong thực tiễn' },
 };
 
 const PHASE: Record<EngineId, string> = {
@@ -220,6 +230,41 @@ const MATH_8: Row[] = [
   [39, 'Hình chóp tứ giác đều', 't8-X', 'solid'],
 ];
 
+const MATH_9: Row[] = [
+  [1, 'Khái niệm phương trình và hệ hai phương trình bậc nhất hai ẩn', 't9-I', 'algebra'],
+  [2, 'Giải hệ hai phương trình bậc nhất hai ẩn', 't9-I', 'algebra'],
+  [3, 'Giải bài toán bằng cách lập hệ phương trình', 't9-I', 'algebra'],
+  [4, 'Phương trình quy về phương trình bậc nhất một ẩn', 't9-II', 'algebra'],
+  [5, 'Bất đẳng thức và tính chất', 't9-II', 'algebra'],
+  [6, 'Bất phương trình bậc nhất một ẩn', 't9-II', 'algebra'],
+  [7, 'Căn bậc hai và căn thức bậc hai', 't9-III', 'algebra'],
+  [8, 'Khai căn bậc hai với phép nhân và phép chia', 't9-III', 'algebra'],
+  [9, 'Biến đổi đơn giản và rút gọn biểu thức chứa căn thức bậc hai', 't9-III', 'algebra'],
+  [10, 'Căn bậc ba và căn thức bậc ba', 't9-III', 'algebra'],
+  [11, 'Tỉ số lượng giác của góc nhọn', 't9-IV', 'geometry'],
+  [12, 'Một số hệ thức giữa cạnh, góc trong tam giác vuông và ứng dụng', 't9-IV', 'geometry'],
+  [13, 'Mở đầu về đường tròn', 't9-V', 'geometry'],
+  [14, 'Cung và dây của một đường tròn', 't9-V', 'geometry'],
+  [15, 'Độ dài của cung tròn. Diện tích hình quạt tròn và hình vành khuyên', 't9-V', 'geometry'],
+  [16, 'Vị trí tương đối của đường thẳng và đường tròn', 't9-V', 'geometry'],
+  [17, 'Vị trí tương đối của hai đường tròn', 't9-V', 'geometry'],
+  [18, 'Hàm số y = ax² (a ≠ 0)', 't9-VI', 'func'],
+  [19, 'Phương trình bậc hai một ẩn', 't9-VI', 'algebra'],
+  [20, 'Định lí Viète và ứng dụng', 't9-VI', 'algebra'],
+  [21, 'Giải bài toán bằng cách lập phương trình', 't9-VI', 'algebra'],
+  [22, 'Bảng tần số và biểu đồ tần số', 't9-VII', 'stats'],
+  [23, 'Bảng tần số tương đối và biểu đồ tần số tương đối', 't9-VII', 'stats'],
+  [24, 'Bảng tần số, tần số tương đối ghép nhóm và biểu đồ', 't9-VII', 'stats'],
+  [25, 'Phép thử ngẫu nhiên và không gian mẫu', 't9-VIII', 'prob'],
+  [26, 'Xác suất của biến cố liên quan tới phép thử', 't9-VIII', 'prob'],
+  [27, 'Góc nội tiếp', 't9-IX', 'geometry'],
+  [28, 'Đường tròn ngoại tiếp và đường tròn nội tiếp của một tam giác', 't9-IX', 'geometry'],
+  [29, 'Tứ giác nội tiếp', 't9-IX', 'geometry'],
+  [30, 'Đa giác đều', 't9-IX', 'geometry'],
+  [31, 'Hình trụ và hình nón', 't9-X', 'solid'],
+  [32, 'Hình cầu', 't9-X', 'solid'],
+];
+
 function build(subject: Subject, grade: Grade, rows: Row[]): LessonMeta[] {
   return rows.map(([num, title, chapter, engine, practical]) => ({
     id: `${ID_PREFIX[subject]}${grade}-${num}`,
@@ -234,7 +279,7 @@ function build(subject: Subject, grade: Grade, rows: Row[]): LessonMeta[] {
   }));
 }
 
-export const LESSONS: LessonMeta[] = [...build('phys', 7, ROWS_7), ...build('phys', 8, ROWS_8), ...build('phys', 9, ROWS_9), ...build('chem', 7, CHEM_7), ...build('chem', 8, CHEM_8), ...build('chem', 9, CHEM_9), ...build('math', 8, MATH_8)];
+export const LESSONS: LessonMeta[] = [...build('phys', 7, ROWS_7), ...build('phys', 8, ROWS_8), ...build('phys', 9, ROWS_9), ...build('chem', 7, CHEM_7), ...build('chem', 8, CHEM_8), ...build('chem', 9, CHEM_9), ...build('math', 8, MATH_8), ...build('math', 9, MATH_9)];
 
 export const lessonById = (id: string) => LESSONS.find((l) => l.id === id);
 

@@ -1,13 +1,13 @@
 // Dữ liệu và biểu đồ (Toán 8 Chương V): chuyển đổi bảng ↔ biểu đồ cột, cột kép, hình quạt tròn,
 // đoạn thẳng, biểu đồ tranh; biểu đồ gây hiểu lầm (trục không bắt đầu từ 0); phát hiện dữ liệu không hợp lí.
 import type { EngineProps } from '../../core/types';
-import { Row, Seg, Slider } from '../../ui/controls';
+import { Row, Seg, Slider, Toggle } from '../../ui/controls';
 import { C, VH, VW } from './mcommon';
 import { dec } from './poly';
 import { CHARTS, DATAFIX } from './mathData';
 
-export type ChartKind = 'table' | 'bar' | 'bar2' | 'pie' | 'line' | 'picto';
-const KIND_NAME: Record<ChartKind, string> = { table: 'Bảng', bar: 'Cột', bar2: 'Cột kép', pie: 'Quạt tròn', line: 'Đoạn thẳng', picto: 'Tranh' };
+export type ChartKind = 'table' | 'bar' | 'bar2' | 'pie' | 'line' | 'picto' | 'hist';
+const KIND_NAME: Record<ChartKind, string> = { table: 'Bảng', bar: 'Cột', bar2: 'Cột kép', pie: 'Quạt tròn', line: 'Đoạn thẳng', picto: 'Tranh', hist: 'Cột liền (ghép nhóm)' };
 
 export interface ChartDoc {
   mode: 'chart';
@@ -19,6 +19,8 @@ export interface ChartDoc {
   edit?: boolean;
   /** Trục đứng bắt đầu từ giá trị này (minh hoạ biểu đồ gây hiểu lầm) */
   axisFrom?: number;
+  /** Biểu diễn tần số tương đối (%) thay cho tần số */
+  rel?: boolean;
 }
 
 function niceMax(v: number) {
@@ -29,7 +31,8 @@ function niceMax(v: number) {
 
 export function ChartView({ doc, onDoc, showValues }: EngineProps<ChartDoc, unknown>) {
   const set = CHARTS[doc.set];
-  const vals = doc.vals ?? set.series.map((s) => s.vals);
+  const raw = doc.vals ?? set.series.map((s) => s.vals);
+  const vals = doc.rel ? raw.map((sv) => { const tot = sv.reduce((a, b) => a + b, 0) || 1; return sv.map((v) => Math.round((1000 * v) / tot) / 10); }) : raw;
   const nC = set.cats.length;
   const nS = set.series.length;
   const box = { x: 120, y: 90, w: 960, h: 470 };
@@ -51,7 +54,7 @@ export function ChartView({ doc, onDoc, showValues }: EngineProps<ChartDoc, unkn
       <line x1={box.x} x2={box.x} y1={box.y - 20} y2={box.y + box.h} stroke="var(--ink)" strokeWidth={2.5} />
       <line x1={box.x} x2={box.x + box.w + 10} y1={box.y + box.h} y2={box.y + box.h} stroke="var(--ink)" strokeWidth={2.5} />
       <text x={box.x} y={box.y - 30} textAnchor="middle" fontSize={17} fontWeight={800} fill="var(--ink-2)">
-        {set.unit}
+        {doc.rel ? '%' : set.unit}
       </text>
       {lo > 0 && (
         <text x={box.x + 10} y={box.y + box.h - 8} fontSize={16} fontWeight={800} fill={C.b}>
@@ -77,19 +80,29 @@ export function ChartView({ doc, onDoc, showValues }: EngineProps<ChartDoc, unkn
           <tbody>
             {set.series.map((s, i) => (
               <tr key={s.name}>
-                <th>{s.name}</th>
-                {vals[i].map((v, j) => (
-                  <td key={j}>{lab(v)}</td>
+                <th>{doc.rel ? `${s.name} (tần số)` : s.name}</th>
+                {raw[i].map((v, j) => (
+                  <td key={j}>{doc.rel ? dec(v, 1) : lab(v)}</td>
                 ))}
               </tr>
             ))}
+            {doc.rel &&
+              set.series.map((s, i) => (
+                <tr key={`r${s.name}`}>
+                  <th>Tần số tương đối (%)</th>
+                  {vals[i].map((v, j) => (
+                    <td key={j}>{lab(v)}</td>
+                  ))}
+                </tr>
+              ))}
           </tbody>
         </table>
       </foreignObject>
     );
-  } else if (doc.kind === 'bar' || doc.kind === 'bar2') {
-    const series = doc.kind === 'bar' ? [0] : vals.map((_, i) => i);
-    const bw = (cw * 0.7) / series.length;
+  } else if (doc.kind === 'bar' || doc.kind === 'bar2' || doc.kind === 'hist') {
+    const series = doc.kind === 'bar2' ? vals.map((_, i) => i) : [0];
+    const hist = doc.kind === 'hist';
+    const bw = hist ? cw : (cw * 0.7) / series.length;
     body = (
       <g>
         {axes}
@@ -97,13 +110,14 @@ export function ChartView({ doc, onDoc, showValues }: EngineProps<ChartDoc, unkn
           <g key={c}>
             {series.map((si, k) => {
               const v = vals[si][j];
-              const x = box.x + j * cw + cw * 0.15 + k * bw;
+              const x = box.x + j * cw + (hist ? 2 : cw * 0.15) + k * bw;
               const y = Y(Math.max(v, lo));
               return (
                 <g key={si}>
-                  <rect x={x} y={y} width={bw - 4} height={box.y + box.h - y} fill={C.solid[(doc.kind === 'bar' ? j % 1 : si) % C.solid.length]} rx={4} />
+                  <rect x={x} y={y} width={bw - 4} height={box.y + box.h - y} fill={C.solid[(doc.kind === 'bar2' ? si : 0) % C.solid.length]} rx={hist ? 0 : 4} stroke={hist ? '#fff' : undefined} strokeWidth={hist ? 2 : 0} />
                   <text x={x + (bw - 4) / 2} y={y - 8} textAnchor="middle" fontSize={16} fontWeight={800} fill="var(--ink)">
                     {lab(v)}
+                  {doc.rel ? '%' : ''}
                   </text>
                 </g>
               );
@@ -250,6 +264,7 @@ export function ChartView({ doc, onDoc, showValues }: EngineProps<ChartDoc, unkn
             <Seg value={doc.kind} options={kinds} onChange={(k) => onDoc({ ...doc, kind: k })} fmtOpt={(k) => KIND_NAME[k]} />
           </Row>
         )}
+        {set.rel && <Toggle value={!!doc.rel} onChange={(v) => onDoc({ ...doc, rel: v })} label="Biểu diễn tần số tương đối (%)" />}
         {doc.axisFrom !== undefined && (
           <Row label="Trục đứng bắt đầu từ">
             <Slider value={doc.axisFrom} min={0} max={Math.floor(Math.min(...vals[0]) * 0.95)} step={1} digits={0} onChange={(v) => onDoc({ ...doc, axisFrom: v })} />
@@ -261,11 +276,11 @@ export function ChartView({ doc, onDoc, showValues }: EngineProps<ChartDoc, unkn
             {set.cats.map((c, j) => (
               <div key={c} className="num-edit">
                 <span>{c}</span>
-                <button className="btn small-btn" onClick={() => onDoc({ ...doc, vals: vals.map((s, i) => (i === 0 ? s.map((v, k) => (k === j ? Math.max(0, v - (set.stepEdit ?? 1)) : v)) : s)) })}>
+                <button className="btn small-btn" onClick={() => onDoc({ ...doc, vals: raw.map((s, i) => (i === 0 ? s.map((v, k) => (k === j ? Math.max(0, v - (set.stepEdit ?? 1)) : v)) : s)) })}>
                   −
                 </button>
-                <b>{dec(vals[0][j], 1)}</b>
-                <button className="btn small-btn" onClick={() => onDoc({ ...doc, vals: vals.map((s, i) => (i === 0 ? s.map((v, k) => (k === j ? v + (set.stepEdit ?? 1) : v)) : s)) })}>
+                <b>{dec(raw[0][j], 1)}</b>
+                <button className="btn small-btn" onClick={() => onDoc({ ...doc, vals: raw.map((s, i) => (i === 0 ? s.map((v, k) => (k === j ? v + (set.stepEdit ?? 1) : v)) : s)) })}>
                   +
                 </button>
               </div>

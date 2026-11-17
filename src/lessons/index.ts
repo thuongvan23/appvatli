@@ -12,6 +12,7 @@ import { PHYS7_LESSONS } from './phys7';
 import { CHEM7_LESSONS } from './chem7';
 import { MATH8A_LESSONS } from './math8a';
 import { MATH8B_LESSONS } from './math8b';
+import { MATH9_LESSONS } from './math9';
 
 export const CONTENT: Record<string, LessonContent> = {
   ...CIRCUIT_LESSONS,
@@ -27,6 +28,7 @@ export const CONTENT: Record<string, LessonContent> = {
   ...CHEM7_LESSONS,
   ...MATH8A_LESSONS,
   ...MATH8B_LESSONS,
+  ...MATH9_LESSONS,
 };
 
 export const isReady = (id: string) => id in CONTENT;
