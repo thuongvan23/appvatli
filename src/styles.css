@@ -2088,7 +2088,7 @@ b.big {
   background: #e0e7ff;
   color: #3730a3;
 }
-.grade-card.g7:not(.chem) .grade-num {
+.grade-card.g7:not(.chem):not(.math) .grade-num {
   background: #f59e0b;
 }
 .ptable {

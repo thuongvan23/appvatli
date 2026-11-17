@@ -178,3 +178,30 @@ describe('Toán 9', () => {
     expect(roundMetrics('sphere', 3, 0).V).toBeCloseTo(36 * Math.PI);
   });
 });
+
+import { decStr, decimalExpand, prismMetrics } from './Math7Views';
+
+describe('Toán 7', () => {
+  it('đủ 37 bài, có mô phỏng và nội dung bài học', () => {
+    const m = LESSONS.filter((l) => l.subject === 'math' && l.grade === 7);
+    expect(m.length).toBe(37);
+    for (const l of m) {
+      expect(CONTENT[l.id], l.id).toBeTruthy();
+      expect(NOTES[l.id], l.id).toBeTruthy();
+      for (const s of NOTES[l.id].sections) if (s.scene) expect(s.scene, `${l.id} ${s.title}`).toBeLessThanOrEqual(CONTENT[l.id].scenes.length);
+    }
+  });
+  it('số thập phân vô hạn tuần hoàn', () => {
+    expect(decStr(1, 3)).toBe('0,(3)');
+    expect(decStr(5, 6)).toBe('0,8(3)');
+    expect(decStr(1, 7)).toBe('0,(142857)');
+    expect(decStr(3, 8)).toBe('0,375');
+    expect(decimalExpand(2, 11).start).toBe(0);
+  });
+  it('hình hộp, lập phương, lăng trụ đứng', () => {
+    expect(prismMetrics({ kind: 'box', a: 80, b: 40, h: 50 }).V).toBe(160000);
+    expect(prismMetrics({ kind: 'cube', a: 3, b: 3, h: 0 }).V).toBe(27);
+    expect(prismMetrics({ kind: 'tri', a: 3, b: 4, h: 10 }).V).toBe(60);
+    expect(prismMetrics({ kind: 'box', a: 80, b: 40, h: 50 }).Sxq).toBe(12000);
+  });
+});

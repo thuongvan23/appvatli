@@ -592,6 +592,8 @@ export interface SimilarDoc {
   rot: number;
   flip?: boolean;
   showAll?: boolean;
+  /** Toán 7: hai tam giác bằng nhau (tỉ số 1) */
+  cong?: boolean;
 }
 
 function similarImage(tri: P[], k: number, rotDeg: number, flip: boolean, center: P): P[] {
@@ -627,7 +629,7 @@ export function SimilarView({ doc, onDoc, showValues }: EngineProps<SimilarDoc, 
     tri = [A, B, add(A, mul(nr, dot(sub(Cc, A), nr)))];
   }
   const [A, B, Cc] = tri;
-  const tri2 = doc.sub === 'free2' && doc.tri2 ? doc.tri2 : similarImage(tri, doc.k, doc.rot, !!doc.flip, { x: 690, y: 360 });
+  const tri2 = doc.sub === 'free2' && doc.tri2 ? doc.tri2 : similarImage(tri, doc.cong ? 1 : doc.k, doc.rot, !!doc.flip, { x: 690, y: 360 });
   const chk = similarCheck(tri, tri2);
   const ctr1 = { x: (A.x + B.x + Cc.x) / 3, y: (A.y + B.y + Cc.y) / 3 };
   const ctr2 = { x: (tri2[0].x + tri2[1].x + tri2[2].x) / 3, y: (tri2[0].y + tri2[1].y + tri2[2].y) / 3 };
@@ -639,7 +641,7 @@ export function SimilarView({ doc, onDoc, showValues }: EngineProps<SimilarDoc, 
   const names = ['A', 'B', 'C'];
   const names2 = ["A'", "B'", "C'"];
   // phần tử được "cho" theo từng trường hợp
-  const showSide = (i: number) => doc.showAll || doc.sub === 'def' || doc.sub === 'free2' || doc.sub === 'ccc' || (doc.sub === 'cgc' && i !== 0) || (rightSub && i !== 1 && doc.sub === 'right');
+  const showSide = (i: number) => (doc.cong && doc.sub === 'gg' && i === 0) || doc.showAll || doc.sub === 'def' || doc.sub === 'free2' || doc.sub === 'ccc' || (doc.sub === 'cgc' && i !== 0) || (rightSub && i !== 1 && doc.sub === 'right');
   const showAng = (i: number) => doc.showAll || doc.sub === 'def' || doc.sub === 'free2' || (doc.sub === 'cgc' && i === 0) || (doc.sub === 'gg' && i !== 0) || (rightSub && (i === 0 || i === 1));
   const angCol = [C.d, C.c, C.e];
   const sideCol = [C.b, C.f, C.a];
@@ -703,20 +705,22 @@ export function SimilarView({ doc, onDoc, showValues }: EngineProps<SimilarDoc, 
               {drawTri(tri, names, ctr1, false, chk.s1, chk.a1)}
               {drawTri(tri2, names2, ctr2, true, chk.s2, chk.a2)}
               <text x={30} y={VH - 20} fontSize={22} fontWeight={900} fill={chk.ok ? C.c : C.b} className="math-text">
-                {showValues ? (chk.ok ? `△A'B'C' ∽ △ABC, tỉ số đồng dạng k = ${f2(chk.ratios[0])}` : 'Hai tam giác không đồng dạng (theo thứ tự đỉnh này)') : '△A′B′C′ và △ABC có đồng dạng không?'}
+                {doc.cong ? (showValues ? (chk.ok && Math.abs(chk.ratios[0] - 1) < 0.03 ? "△A'B'C' = △ABC" : 'Hai tam giác không bằng nhau (theo thứ tự đỉnh này)') : '△A′B′C′ và △ABC có bằng nhau không?') : showValues ? (chk.ok ? `△A'B'C' ∽ △ABC, tỉ số đồng dạng k = ${f2(chk.ratios[0])}` : 'Hai tam giác không đồng dạng (theo thứ tự đỉnh này)') : '△A′B′C′ và △ABC có đồng dạng không?'}
               </text>
             </g>
           )}
         </svg>
       </div>
       <aside className="eng-side">
-        <h3>{SIM_TITLE[doc.sub]}</h3>
-        <p className="small">{SIM_HINT[doc.sub]}</p>
+        <h3>{doc.cong ? CONG_TITLE[doc.sub] : SIM_TITLE[doc.sub]}</h3>
+        <p className="small">{doc.cong ? CONG_HINT[doc.sub] : SIM_HINT[doc.sub]}</p>
         {doc.sub !== 'free2' && doc.sub !== 'altitude' && (
           <>
-            <Row label="Tỉ số đồng dạng k">
-              <Slider value={doc.k} min={0.4} max={2} step={0.05} digits={2} onChange={(v) => onDoc({ ...doc, k: v })} />
-            </Row>
+            {!doc.cong && (
+              <Row label="Tỉ số đồng dạng k">
+                <Slider value={doc.k} min={0.4} max={2} step={0.05} digits={2} onChange={(v) => onDoc({ ...doc, k: v })} />
+              </Row>
+            )}
             <Row label="Quay tam giác thứ hai">
               <Slider value={doc.rot} min={-180} max={180} step={5} digits={0} suffix="°" onChange={(v) => onDoc({ ...doc, rot: v })} />
             </Row>
@@ -737,11 +741,30 @@ export function SimilarView({ doc, onDoc, showValues }: EngineProps<SimilarDoc, 
             ]}
           />
         )}
-        {doc.sub !== 'altitude' && showValues && chk.ok && <p className="small">Tỉ số chu vi = {f2(chk.ratios[0])} = k; tỉ số diện tích = {f2(polyArea(tri2) / polyArea(tri))} = k².</p>}
+        {doc.sub !== 'altitude' && !doc.cong && showValues && chk.ok && <p className="small">Tỉ số chu vi = {f2(chk.ratios[0])} = k; tỉ số diện tích = {f2(polyArea(tri2) / polyArea(tri))} = k².</p>}
       </aside>
     </div>
   );
 }
+
+const CONG_TITLE: Record<SimilarDoc['sub'], string> = {
+  def: 'Hai tam giác bằng nhau',
+  ccc: 'Trường hợp cạnh – cạnh – cạnh (c.c.c)',
+  cgc: 'Trường hợp cạnh – góc – cạnh (c.g.c)',
+  gg: 'Trường hợp góc – cạnh – góc (g.c.g)',
+  free2: 'Kiểm tra hai tam giác bằng nhau',
+  right: 'Các trường hợp bằng nhau của tam giác vuông',
+  altitude: '',
+};
+const CONG_HINT: Record<SimilarDoc['sub'], string> = {
+  def: "Kéo các đỉnh △ABC; △A'B'C' được tạo bằng cách dời, quay, lật △ABC. Các cạnh tương ứng và các góc tương ứng bằng nhau.",
+  ccc: "Nếu ba cạnh của tam giác này bằng ba cạnh của tam giác kia thì hai tam giác đó bằng nhau.",
+  cgc: "Nếu hai cạnh và góc xen giữa của tam giác này bằng hai cạnh và góc xen giữa của tam giác kia thì hai tam giác đó bằng nhau.",
+  gg: "Nếu một cạnh và hai góc kề của tam giác này bằng một cạnh và hai góc kề của tam giác kia thì hai tam giác đó bằng nhau.",
+  free2: 'Kéo các đỉnh của cả hai tam giác (bắt vào lưới) để tạo hai tam giác bằng nhau.',
+  right: 'Hai tam giác vuông bằng nhau nếu: hai cạnh góc vuông bằng nhau; hoặc một cạnh góc vuông và một góc nhọn kề bằng nhau; hoặc cạnh huyền và một góc nhọn bằng nhau; hoặc cạnh huyền và một cạnh góc vuông bằng nhau.',
+  altitude: '',
+};
 
 const SIM_TITLE: Record<SimilarDoc['sub'], string> = {
   def: 'Hai tam giác đồng dạng',

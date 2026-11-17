@@ -9,6 +9,7 @@ import { ChartDoc, ChartView, DataFixDoc, DataFixView } from './DataViews';
 import { ExperimentDoc, ExperimentView, ProbDoc, ProbView } from './ProbViews';
 import { PyramidDoc, PyramidView } from './SolidViews';
 import { MATH_TABLES } from './mathData';
+import { AnglesDoc, AnglesView, NumLineDoc, NumLineView, PrismDoc, PrismView, RatioDoc, RatioView, Tri7Doc, Tri7View } from './Math7Views';
 import { CircleDoc, CircleView, IneqDoc, IneqView, ParabolaDoc, ParabolaView, RoundDoc, RoundView, SqrtDoc, SqrtView, SystemDoc, SystemView, TrigDoc, TrigView } from './Math9Views';
 
 // Bảng so sánh của Toán dùng chung kiểu cảnh "table" với Hoá học
@@ -19,7 +20,8 @@ export type MathDoc =
   | FmapDoc | PlaneDoc | LinearDoc
   | QuadDoc | ThalesDoc | BisectorDoc | SimilarDoc | PythagDoc | HomoDoc | HeightDoc
   | ChartDoc | DataFixDoc | ProbDoc | ExperimentDoc | PyramidDoc | TableDoc
-  | SystemDoc | IneqDoc | SqrtDoc | TrigDoc | CircleDoc | ParabolaDoc | RoundDoc;
+  | SystemDoc | IneqDoc | SqrtDoc | TrigDoc | CircleDoc | ParabolaDoc | RoundDoc
+  | NumLineDoc | AnglesDoc | Tri7Doc | RatioDoc | PrismDoc;
 export type MathOptions = Record<string, never>;
 
 export const MATH_MODES = [
@@ -28,6 +30,7 @@ export const MATH_MODES = [
   'quad', 'thales', 'bisector', 'similar', 'pythag', 'homothety', 'height',
   'chart', 'datafix', 'prob', 'experiment', 'pyramid', 'table',
   'system', 'ineq', 'sqrt', 'trig', 'circle', 'parabola', 'round',
+  'numline', 'angles', 'tri7', 'ratio', 'prism',
 ] as const;
 
 export function MathView(props: EngineProps<MathDoc, MathOptions>) {
@@ -96,5 +99,15 @@ export function MathView(props: EngineProps<MathDoc, MathOptions>) {
       return <ParabolaView {...p} />;
     case 'round':
       return <RoundView {...p} />;
+    case 'numline':
+      return <NumLineView {...p} />;
+    case 'angles':
+      return <AnglesView {...p} />;
+    case 'tri7':
+      return <Tri7View {...p} />;
+    case 'ratio':
+      return <RatioView {...p} />;
+    case 'prism':
+      return <PrismView {...p} />;
   }
 }

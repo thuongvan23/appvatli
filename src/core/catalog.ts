@@ -4,7 +4,7 @@ export const SUBJECT_NAME: Record<Subject, string> = { phys: 'Vật lí', chem: 
 /** Tiền tố đường dẫn trang danh sách bài theo môn */
 export const SUBJECT_PATH: Record<Subject, string> = { phys: 'lop', chem: 'hoa', math: 'toan' };
 /** Các lớp có nội dung của từng môn */
-export const SUBJECT_GRADES: Record<Subject, Grade[]> = { phys: [7, 8, 9], chem: [7, 8, 9], math: [8, 9] };
+export const SUBJECT_GRADES: Record<Subject, Grade[]> = { phys: [7, 8, 9], chem: [7, 8, 9], math: [7, 8, 9] };
 /** Tiền tố mã bài theo môn */
 const ID_PREFIX: Record<Subject, string> = { phys: 'l', chem: 'h', math: 't' };
 
@@ -38,6 +38,16 @@ export const CHAPTERS: Record<string, ChapterMeta> = {
   'h9-IX': { subject: 'chem', grade: 9, roman: 'IX', title: 'Lipid. Carbohydrate. Protein. Polymer' },
   'h9-X': { subject: 'chem', grade: 9, roman: 'X', title: 'Khai thác tài nguyên từ vỏ Trái Đất' },
   // ---------- Toán ----------
+  't7-I': { subject: 'math', grade: 7, roman: 'I', title: 'Số hữu tỉ' },
+  't7-II': { subject: 'math', grade: 7, roman: 'II', title: 'Số thực' },
+  't7-III': { subject: 'math', grade: 7, roman: 'III', title: 'Góc và đường thẳng song song' },
+  't7-IV': { subject: 'math', grade: 7, roman: 'IV', title: 'Tam giác bằng nhau' },
+  't7-V': { subject: 'math', grade: 7, roman: 'V', title: 'Thu thập và biểu diễn dữ liệu' },
+  't7-VI': { subject: 'math', grade: 7, roman: 'VI', title: 'Tỉ lệ thức và đại lượng tỉ lệ' },
+  't7-VII': { subject: 'math', grade: 7, roman: 'VII', title: 'Biểu thức đại số và đa thức một biến' },
+  't7-VIII': { subject: 'math', grade: 7, roman: 'VIII', title: 'Làm quen với biến cố và xác suất của biến cố' },
+  't7-IX': { subject: 'math', grade: 7, roman: 'IX', title: 'Quan hệ giữa các yếu tố trong một tam giác' },
+  't7-X': { subject: 'math', grade: 7, roman: 'X', title: 'Một số hình khối trong thực tiễn' },
   't8-I': { subject: 'math', grade: 8, roman: 'I', title: 'Đa thức' },
   't8-II': { subject: 'math', grade: 8, roman: 'II', title: 'Hằng đẳng thức đáng nhớ và ứng dụng' },
   't8-III': { subject: 'math', grade: 8, roman: 'III', title: 'Tứ giác' },
@@ -265,6 +275,46 @@ const MATH_9: Row[] = [
   [32, 'Hình cầu', 't9-X', 'solid'],
 ];
 
+const MATH_7: Row[] = [
+  [1, 'Tập hợp các số hữu tỉ', 't7-I', 'algebra'],
+  [2, 'Cộng, trừ, nhân, chia số hữu tỉ', 't7-I', 'algebra'],
+  [3, 'Luỹ thừa với số mũ tự nhiên của một số hữu tỉ', 't7-I', 'algebra'],
+  [4, 'Thứ tự thực hiện các phép tính. Quy tắc chuyển vế', 't7-I', 'algebra'],
+  [5, 'Làm quen với số thập phân vô hạn tuần hoàn', 't7-II', 'algebra'],
+  [6, 'Số vô tỉ. Căn bậc hai số học', 't7-II', 'algebra'],
+  [7, 'Tập hợp các số thực', 't7-II', 'algebra'],
+  [8, 'Góc ở vị trí đặc biệt. Tia phân giác của một góc', 't7-III', 'geometry'],
+  [9, 'Hai đường thẳng song song và dấu hiệu nhận biết', 't7-III', 'geometry'],
+  [10, 'Tiên đề Euclid. Tính chất của hai đường thẳng song song', 't7-III', 'geometry'],
+  [11, 'Định lí và chứng minh định lí', 't7-III', 'geometry'],
+  [12, 'Tổng các góc trong một tam giác', 't7-IV', 'geometry'],
+  [13, 'Hai tam giác bằng nhau. Trường hợp bằng nhau thứ nhất của tam giác', 't7-IV', 'geometry'],
+  [14, 'Trường hợp bằng nhau thứ hai và thứ ba của tam giác', 't7-IV', 'geometry'],
+  [15, 'Các trường hợp bằng nhau của tam giác vuông', 't7-IV', 'geometry'],
+  [16, 'Tam giác cân. Đường trung trực của đoạn thẳng', 't7-IV', 'geometry'],
+  [17, 'Thu thập và phân loại dữ liệu', 't7-V', 'stats'],
+  [18, 'Biểu đồ hình quạt tròn', 't7-V', 'stats'],
+  [19, 'Biểu đồ đoạn thẳng', 't7-V', 'stats'],
+  [20, 'Tỉ lệ thức', 't7-VI', 'algebra'],
+  [21, 'Tính chất của dãy tỉ số bằng nhau', 't7-VI', 'algebra'],
+  [22, 'Đại lượng tỉ lệ thuận', 't7-VI', 'func'],
+  [23, 'Đại lượng tỉ lệ nghịch', 't7-VI', 'func'],
+  [24, 'Biểu thức đại số', 't7-VII', 'algebra'],
+  [25, 'Đa thức một biến', 't7-VII', 'algebra'],
+  [26, 'Phép cộng và phép trừ đa thức một biến', 't7-VII', 'algebra'],
+  [27, 'Phép nhân đa thức một biến', 't7-VII', 'algebra'],
+  [28, 'Phép chia đa thức một biến', 't7-VII', 'algebra'],
+  [29, 'Làm quen với biến cố', 't7-VIII', 'prob'],
+  [30, 'Làm quen với xác suất của biến cố', 't7-VIII', 'prob'],
+  [31, 'Quan hệ giữa góc và cạnh đối diện trong một tam giác', 't7-IX', 'geometry'],
+  [32, 'Quan hệ giữa đường vuông góc và đường xiên', 't7-IX', 'geometry'],
+  [33, 'Quan hệ giữa ba cạnh của một tam giác', 't7-IX', 'geometry'],
+  [34, 'Sự đồng quy của ba đường trung tuyến, ba đường phân giác trong một tam giác', 't7-IX', 'geometry'],
+  [35, 'Sự đồng quy của ba đường trung trực, ba đường cao trong một tam giác', 't7-IX', 'geometry'],
+  [36, 'Hình hộp chữ nhật và hình lập phương', 't7-X', 'solid'],
+  [37, 'Hình lăng trụ đứng tam giác và hình lăng trụ đứng tứ giác', 't7-X', 'solid'],
+];
+
 function build(subject: Subject, grade: Grade, rows: Row[]): LessonMeta[] {
   return rows.map(([num, title, chapter, engine, practical]) => ({
     id: `${ID_PREFIX[subject]}${grade}-${num}`,
@@ -279,7 +329,7 @@ function build(subject: Subject, grade: Grade, rows: Row[]): LessonMeta[] {
   }));
 }
 
-export const LESSONS: LessonMeta[] = [...build('phys', 7, ROWS_7), ...build('phys', 8, ROWS_8), ...build('phys', 9, ROWS_9), ...build('chem', 7, CHEM_7), ...build('chem', 8, CHEM_8), ...build('chem', 9, CHEM_9), ...build('math', 8, MATH_8), ...build('math', 9, MATH_9)];
+export const LESSONS: LessonMeta[] = [...build('phys', 7, ROWS_7), ...build('phys', 8, ROWS_8), ...build('phys', 9, ROWS_9), ...build('chem', 7, CHEM_7), ...build('chem', 8, CHEM_8), ...build('chem', 9, CHEM_9), ...build('math', 7, MATH_7), ...build('math', 8, MATH_8), ...build('math', 9, MATH_9)];
 
 export const lessonById = (id: string) => LESSONS.find((l) => l.id === id);
 

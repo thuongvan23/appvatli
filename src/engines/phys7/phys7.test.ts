@@ -11,7 +11,7 @@ import { FIELD_CFG, clipsFor } from './MagnetViews';
 
 describe('nội dung Vật lí 7', () => {
   it('mọi bài lớp 7 trong danh mục đều có mô phỏng và nội dung bài học', () => {
-    const g7 = LESSONS.filter((l) => l.grade === 7);
+    const g7 = LESSONS.filter((l) => l.grade === 7 && l.subject !== 'math');
     expect(g7.length).toBe(20);
     for (const l of g7) {
       expect(CONTENT[l.id], l.id).toBeTruthy();

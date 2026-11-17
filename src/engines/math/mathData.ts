@@ -3,6 +3,7 @@
 import { Poly, Term, t } from './poly';
 import { DERIVE } from './mathDerive';
 import { CHARTS9, DERIVE9, EXPS9, SORTS9, TABLES9 } from './math9Data';
+import { CHARTS7, DERIVE7, POLY_TASKS7, SORTS7, TABLES7 } from './math7Data';
 export { DERIVE };
 
 // ---------------- Đơn thức ----------------
@@ -589,3 +590,10 @@ Object.assign(CHARTS, CHARTS9);
 Object.assign(EXPS, EXPS9);
 Object.assign(SORTS, SORTS9);
 Object.assign(MATH_TABLES, TABLES9);
+
+// Gộp dữ liệu Toán 7
+Object.assign(DERIVE, DERIVE7);
+Object.assign(CHARTS, CHARTS7);
+Object.assign(SORTS, SORTS7);
+Object.assign(MATH_TABLES, TABLES7);
+Object.assign(POLY_TASKS, POLY_TASKS7);
